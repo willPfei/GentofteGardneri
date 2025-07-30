@@ -70,7 +70,7 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Contact form handling
+// Contact form handling with Formspree
 const contactForm = document.querySelector('.contact-form');
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
@@ -82,32 +82,92 @@ if (contactForm) {
         
         // Simple validation
         if (!data.name || !data.email || !data.message) {
-            alert('Venligst udfyld alle påkrævede felter.');
+            showMessage('Venligst udfyld alle påkrævede felter.', 'error');
             return;
         }
         
         // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(data.email)) {
-            alert('Venligst indtast en gyldig email-adresse.');
+            showMessage('Venligst indtast en gyldig email-adresse.', 'error');
             return;
         }
         
-        // Simulate form submission
+        // Show loading state
         const submitButton = contactForm.querySelector('button[type="submit"]');
         const originalText = submitButton.textContent;
         
         submitButton.textContent = 'Sender...';
         submitButton.disabled = true;
         
-        // Simulate API call
-        setTimeout(() => {
-            alert('Tak for din besked! Vi vender tilbage hurtigst muligt.');
-            contactForm.reset();
+        // Submit to Formspree
+        fetch(contactForm.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                showMessage('Tak for din besked! Vi vender tilbage hurtigst muligt.', 'success');
+                contactForm.reset();
+            } else {
+                throw new Error('Der opstod en fejl');
+            }
+        })
+        .catch(error => {
+            showMessage('Der opstod en fejl. Prøv venligst igen senere.', 'error');
+        })
+        .finally(() => {
             submitButton.textContent = originalText;
             submitButton.disabled = false;
-        }, 2000);
+        });
     });
+}
+
+// Show message function
+function showMessage(message, type) {
+    // Remove existing messages
+    const existingMessage = document.querySelector('.message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Create message element
+    const messageElement = document.createElement('div');
+    messageElement.className = `message message-${type}`;
+    messageElement.textContent = message;
+    
+    // Style the message
+    messageElement.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    if (type === 'success') {
+        messageElement.style.background = '#7cb342';
+    } else {
+        messageElement.style.background = '#f44336';
+    }
+    
+    // Add to page
+    document.body.appendChild(messageElement);
+    
+    // Remove after 5 seconds
+    setTimeout(() => {
+        messageElement.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            messageElement.remove();
+        }, 300);
+    }, 5000);
 }
 
 // Animate elements on scroll
@@ -127,7 +187,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
-    const animateElements = document.querySelectorAll('.service-card, .blog-card, .stat');
+    const animateElements = document.querySelectorAll('.service-card, .gallery-item, .team-member, .stat');
     
     animateElements.forEach(el => {
         el.style.opacity = '0';
@@ -149,19 +209,31 @@ serviceCards.forEach(card => {
     });
 });
 
-// Blog card image hover effects
-const blogCards = document.querySelectorAll('.blog-card');
-blogCards.forEach(card => {
-    const image = card.querySelector('.blog-image img');
+// Gallery image hover effects
+const galleryItems = document.querySelectorAll('.gallery-item');
+galleryItems.forEach(item => {
+    const image = item.querySelector('img');
     if (image) {
-        card.addEventListener('mouseenter', () => {
+        item.addEventListener('mouseenter', () => {
             image.style.transform = 'scale(1.1)';
         });
         
-        card.addEventListener('mouseleave', () => {
+        item.addEventListener('mouseleave', () => {
             image.style.transform = 'scale(1)';
         });
     }
+});
+
+// Team member hover effects
+const teamMembers = document.querySelectorAll('.team-member');
+teamMembers.forEach(member => {
+    member.addEventListener('mouseenter', () => {
+        member.style.transform = 'translateY(-5px)';
+    });
+    
+    member.addEventListener('mouseleave', () => {
+        member.style.transform = 'translateY(0)';
+    });
 });
 
 // Statistics counter animation
@@ -277,4 +349,31 @@ document.addEventListener('DOMContentLoaded', () => {
         section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         sectionObserver.observe(section);
     });
-}); 
+});
+
+// Add CSS animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style); 
