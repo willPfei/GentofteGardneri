@@ -128,7 +128,7 @@ body {
     right: 0;
     bottom: 0;
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&h=1080&fit=crop') center/cover;
+                url('https://images.unsplash.com/photo-1585320806297-9794b3e4fae6?w=1920&h=1080&fit=crop') center/cover;
     z-index: -1;
 }
 
