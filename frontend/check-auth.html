@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Check Authentication</title>
+</head>
+<body>
+  <h1>Authentication Check</h1>
+  <div id="result"></div>
+
+  <script>
+    const resultDiv = document.getElementById('result');
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    const currentUser = localStorage.getItem('currentUser');
+    
+    resultDiv.innerHTML = `
+      <p><strong>isAuthenticated:</strong> ${isAuthenticated}</p>
+      <p><strong>currentUser:</strong> ${currentUser}</p>
+      <button onclick="setAuth()">Set Authentication</button>
+    `;
+    
+    function setAuth() {
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('currentUser', JSON.stringify({
+        name: 'Test User',
+        email: 'test@example.com'
+      }));
+      location.reload();
+    }
+  </script>
+</body>
+</html> 

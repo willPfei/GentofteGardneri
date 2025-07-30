@@ -1,0 +1,64 @@
+/* Apple-style global styles */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@400;700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Muli', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F2F2F7;
+  color: #000000;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Newsreader', serif;
+}
+
+:root {
+  --primary-color: #082542;
+  --secondary-color: #A11D21;
+  --apple-background: #F2F2F7;
+  --apple-card-background: #FFFFFF;
+  --apple-text: #000000;
+  --apple-secondary-text: #666666;
+  --apple-light-gray: #E5E5EA;
+  --apple-gray: #8E8E93;
+  --apple-blue: #082542;
+  --apple-purple: #5856D6;
+  --apple-green: #34C759;
+  --apple-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Apply primary color to links and buttons */
+a, button {
+  color: var(--primary-color);
+}
+
+/* Apply secondary color to hover states */
+a:hover, button:hover {
+  color: var(--secondary-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+code {
+  font-family: 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Disable blue highlight on mobile tap */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
